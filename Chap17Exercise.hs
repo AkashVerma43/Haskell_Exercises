@@ -18,10 +18,10 @@ summed = sum <$> ((,) <$> p <*> q)
 ----
 data Pair a = Pair a a deriving (Show)
 
-instance Functor (Pair) where
-  fmap f (Pair a a') = Pair (f (a)) (f (a'))
+instance Functor Pair where
+  fmap f (Pair a a') = Pair (f a) (f a')
 
-instance Applicative (Pair) where
+instance Applicative Pair where
   pure x = Pair x x
   (Pair f g) <*> (Pair a a') = (Pair (f a) (g a'))
 
@@ -33,7 +33,7 @@ instance Functor (Two a) where
 
 instance Monoid a => Applicative (Two a) where
   pure x = Two mempty x
-  (Two _ f) <*> (Two a' b') = Two a' (f b')
+  (Two a f) <*> (Two a' b') = Two (a<>a') (f b')
 
 --List Applicative Exercise
 data List a = Nil | Cons a (List a) deriving (Eq, Show)
