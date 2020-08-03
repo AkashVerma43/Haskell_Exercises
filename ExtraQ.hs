@@ -59,7 +59,7 @@ instance (Monad f, Monad g) => Monad (C f g) where
 
 --4
 --data P a = P (a->Bool)
-
+--Functor not possible
 --5
 data S s a = S (s -> (a, s))
 
