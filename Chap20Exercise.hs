@@ -4,7 +4,7 @@ module Chap20Exercise where
 import Data.Monoid
 
 --Library Functions
-
+--Implement in terms of foldMap or foldr
 --
 sum' :: (Foldable t, Num a) => t a -> a
 sum' = getSum . foldMap Sum
