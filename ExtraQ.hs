@@ -65,15 +65,14 @@ data S s a = S (s -> (a, s))
 
 instance Functor (S s) where
   fmap f (S g) = S $ (\s -> (let (a, x) = g s in (f a, x)))
-
-instance Monoid s => Applicative (S s) where
-  pure a = S (\_ -> (a, mempty))
+instance Applicative (S s) where
+  pure a = S (\s -> (a, s))
   (S f) <*> (S g) =
     S $
       ( \s ->
           ( let (a, x) = g s
-                (h, x') = f s
-             in (fst (h, x') a, snd (h, x') <> x)
+                h = fst (f s)
+             in (h a, x)
           )
       )
 
@@ -81,15 +80,15 @@ instance Monoid s => Applicative (S s) where
 --f :: s -> (a->b,s)
 -- <*> :: S s (a->b) -> S s a -> S s b
 
-instance Monoid s => Monad (S s) where
+instance Monad (S s) where
   return = pure
   (S g) >>= f =
     S $
       ( \s ->
-          ( let (a, x) = g s
+          ( let a = fst (g s)
                 S h = f a
                 (b, x') = h s
-             in (b, x <> x')
+             in (b, x')
           )
       )
 
